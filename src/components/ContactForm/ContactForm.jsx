@@ -1,8 +1,10 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contactsSlice";
-import { nanoid } from "nanoid";
+import { addContact } from "../../redux/contacts/operations";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import AddIcon from "@mui/icons-material/Add";
 import css from "./ContactForm.module.css";
 
 const ContactForm = () => {
@@ -23,13 +25,13 @@ const ContactForm = () => {
   const handleSubmit = (values, actions) => {
     dispatch(
       addContact({
-        id: nanoid(),
         name: values.name,
         number: values.number,
       })
     );
     actions.resetForm();
   };
+
   return (
     <Formik
       initialValues={initialValues}
@@ -40,17 +42,33 @@ const ContactForm = () => {
         <div className={css.formContainer}>
           <div className={css.addContactContainer}>
             <label htmlFor="name">Name</label>
-            <Field type="text" name="name" />
+            <Field
+              className={css.addContactInput}
+              variant="outlined"
+              name="name"
+              as={TextField}
+            />
             <ErrorMessage name="name" component="div" />
           </div>
           <div className={css.addContactContainer}>
             <label htmlFor="number">Number</label>
-            <Field type="text" name="number" />
+            <Field
+              className={css.addContactInput}
+              variant="outlined"
+              type="text"
+              name="number"
+              as={TextField}
+            />
             <ErrorMessage name="number" component="div" />
           </div>
-          <button className={css.formButton} type="submit">
+          <Button
+            className={css.formButton}
+            variant="outlined"
+            type="submit"
+            startIcon={<AddIcon />}
+          >
             Add Contact
-          </button>
+          </Button>
         </div>
       </Form>
     </Formik>

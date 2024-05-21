@@ -1,25 +1,29 @@
+import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { changeFilter } from "../../redux/filtersSlice";
-import { useSelector } from "react-redux";
-import { selectNameFilter } from "../../redux/filtersSlice";
+import { changeFilter } from "../../redux/filters/slice";
+import { searchContact } from "../../redux/contacts/operations";
+import TextField from "@mui/material/TextField";
 import css from "./SearchBox.module.css";
 
 const SearchBox = () => {
   const dispatch = useDispatch();
-  const nameFilter = useSelector(selectNameFilter);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearch = (event) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+    dispatch(searchContact(value));
     dispatch(changeFilter(event.target.value));
   };
 
   return (
     <div className={css.searchContainer}>
-      <label htmlFor="search">Find contacts by name:</label>
-      <input
+      <label htmlFor="search">Find contacts:</label>
+      <TextField
         className={css.searchInput}
-        type="text"
+        variant="outlined"
         id="search"
-        value={nameFilter}
+        value={searchTerm}
         onChange={handleSearch}
       />
     </div>
