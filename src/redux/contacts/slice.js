@@ -6,6 +6,7 @@ import {
   editContact,
   searchContact,
 } from "../contacts/operations";
+import { logOut } from "../auth/operations";
 
 const contactsInitialState = {
   items: [],
@@ -62,7 +63,6 @@ const contactsSlice = createSlice({
           state.items[updatedContactIndex] = action.payload;
         }
       })
-
       .addCase(editContact.rejected, handleRejected)
       .addCase(searchContact.pending, handlePending)
       .addCase(searchContact.fulfilled, (state, action) => {
@@ -74,6 +74,11 @@ const contactsSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         state.items = [];
+      })
+      .addCase(logOut.fulfilled, (state) => {
+        state.items = [];
+        state.loading = false;
+        state.error = null;
       });
   },
 });
